@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('followers', function (Blueprint $table) {
             $table->id();
-            $table->string('firstName');
-            $table->string('lastName');
-            $table->string('email');
-            $table->string('password');
-            $table->string('phoneNumber');
-            $table->boolean('isBlocked');
+            $table->unsignedBigInteger('users_id');
+            $table->unsignedBigInteger('followerId');
+            $table->foreign('users_id')->references('id')->on('users');
+            $table->boolean('isFollowing');
+            $table->boolean('isRequeested');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('followers');
     }
 };
