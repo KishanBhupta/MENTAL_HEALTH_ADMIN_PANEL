@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Reports extends Model
 {
     use HasFactory;
+
+
+    protected $fillable = [
+        "user_id",
+        "reportedUserId",
+        "reportedPostId",
+        "reportedCommentId",
+        "reportReason",
+        "reportStatus",
+    ];
+
 }

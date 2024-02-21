@@ -17,13 +17,13 @@ return new class extends Migration
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedBigInteger('reportedUserId');
+            $table->unsignedBigInteger('reportedUserId')->nullable();
             $table->foreign('reportedUserID')->references('id')->on('users');
 
-            $table->unsignedBigInteger('reportedPostId');
+            $table->unsignedBigInteger('reportedPostId')->nullable();
             $table->foreign('reportedPostID')->references('id')->on('posts');
 
-            $table->unsignedBigInteger('reportedCommentId');
+            $table->unsignedBigInteger('reportedCommentId')->nullable();
             $table->foreign('reportedCommentID')->references('id')->on('comments');
 
             $table->string('reportReason');

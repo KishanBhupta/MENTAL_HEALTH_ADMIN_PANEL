@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreign('users_id')->references('id')->on('users');
             $table->string('imageUrl');
             $table->string('postText');
-            $table->string('postDescription');
+            $table->text('postDescription');
             $table->bigInteger('likes');
             $table->boolean('postStatus');
-            $table->boolean('isAnonymouse');
+            $table->boolean('isAnonymous');
             $table->timestamps();
         });
     }
