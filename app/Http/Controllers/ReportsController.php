@@ -12,7 +12,30 @@ class ReportsController extends Controller
      */
     public function index()
     {
-        return view('layouts.admin.reports');
+
+        $userReports = Reports::with(['user',"reportedUser"])->where([
+            "reports.reportedPostId"=>NULL,
+            "reports.reportedCommentId"=>NULL,
+        ])->get();
+
+        $postReports = Reports::with(['user','reportedPosts'])->where([
+            "reports.reportedUserId"=>NULL,
+            "reports.reportedCommentId"=>NULL,
+        ])->get();
+
+        $commentReports = Reports::with(['user','reportedComment'])->where([
+            "reports.reportedPostId"=>NULL,
+            "reports.reportedUserId"=>NULL,
+        ])->get();
+
+        return view(
+            'layouts.admin.reports',
+            compact(
+                'postReports', 
+                'commentReports',
+                'userReports'
+                )
+        );
     }
 
     /**

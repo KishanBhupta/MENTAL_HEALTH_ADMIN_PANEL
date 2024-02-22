@@ -16,7 +16,7 @@
           <img src="{{asset('adminres/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
+          <a href="/" class="d-block">Admin</a>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
          
           <li class="nav-header">Reports</li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/" class="nav-link">
               <i class="nav-icon fas fa-home"></i>
               <p>Dashboard</p>
             </a>
@@ -40,7 +40,7 @@
           
           
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/reports" class="nav-link">
               <i class="nav-icon fas fa-chart-line"></i>
               <p>Reports</p>
             </a>
