@@ -1,42 +1,33 @@
-/* Styles for content-wrapper */
-.content-wrapper {
-    padding: 20px;
+
+
+.card {
+    width: 400px; /* Adjust as needed */
+    margin: 279px; /* Centers the card horizontally */
+    margin-top: 30px; /* Adds some space at the top */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
 }
 
-.content-wrapper h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
+.card-body {
+    padding: 20px; /* Padding inside the card */
 }
 
-.content-wrapper p {
-    font-size: 18px;
-    margin-bottom: 15px;
+.card-title {
+    font-size: 1.25rem; /* Title font size */
+    margin-bottom: 10px; /* Space below title */
 }
 
-/* Styles for sidebar */
-.sidebar {
-    background-color: #343a40; /* Adjust background color as needed */
-    color: #fff;
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow-y: auto;
-    padding-top: 60px; /* Adjust padding for top menu */
+.card-text {
+    margin-bottom: 5px; /* Space between each text paragraph */
 }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.btn {
+    margin-top: 15px; /* Space between text and button */
 }
 
-.sidebar ul li {
-    padding: 10px 20px;
-    border-bottom: 1px solid #495057; /* Adjust border color as needed */
-}
 
-.sidebar ul li a {
-    color:
+
+
+
+

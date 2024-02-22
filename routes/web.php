@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\AppFeedbacksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,3 +32,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update');
 });
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/feedbacks', [AppFeedbacksController::class, 'index'])->name('admin.feedback.index');
+});
+

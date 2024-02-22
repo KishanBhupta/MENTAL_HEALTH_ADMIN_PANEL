@@ -14,4 +14,10 @@ class AppFeedbacks extends Model
         "feedbackData",
         "feedbackRating"
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
 }
