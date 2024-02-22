@@ -1,0 +1,42 @@
+/* Styles for content-wrapper */
+.content-wrapper {
+    padding: 20px;
+}
+
+.content-wrapper h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.content-wrapper p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Styles for sidebar */
+.sidebar {
+    background-color: #343a40; /* Adjust background color as needed */
+    color: #fff;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    padding-top: 60px; /* Adjust padding for top menu */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 20px;
+    border-bottom: 1px solid #495057; /* Adjust border color as needed */
+}
+
+.sidebar ul li a {
+    color:
