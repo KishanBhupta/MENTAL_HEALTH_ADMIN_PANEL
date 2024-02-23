@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class AdminProfileController extends Controller
 {
@@ -21,8 +23,26 @@ class AdminProfileController extends Controller
 
     public function update(Request $request)
     {
-        $admin = Admin::all();
-        $admin->update($request->all());
-        return redirect()->route('layouts.admin.show')->with('success', 'Profile updated successfully');
-    }
+        $admin = Admin::first(); // Assuming admin is authenticated
+
+        $validatedData = $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8',
+        ]);
+
+        // Check if the old password matches the one stored in the database
+        if ($validatedData['old_password'] !== $admin->adminPassword) {
+            return redirect()->back()->with('error', 'The old password is incorrect.');
+        }
+        
+
+        // Update admin password
+        $admin->adminPassword = $validatedData['password'];
+        $admin->save();
+
+        return redirect()->route('admin.profile.show')->with('success', 'Password updated successfully');
+    }        
+
+
 }

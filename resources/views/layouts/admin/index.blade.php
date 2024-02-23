@@ -98,12 +98,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($feedbacks as $feedback)
+                                @foreach(array_reverse($feedbacks->toArray()) as $feedback)
                                 <tr>
-                                    <td>{{ $feedback->id }}</td>
-                                    <td>{{ $feedback->users_id }}</td>
-                                    <td>{{ $feedback->feedbackData }}</td>
-                                    <td>{{ $feedback->feedbackRating }}</td>
+                                    <td>{{ $feedback['id'] }}</td>
+                                    <td>{{ isset($feedback['user']['firstName']) ? $feedback['user']['firstName'] : '$firstName' }}</td>
+                                    <td>{{ $feedback['feedbackData'] }}</td>
+                                    <td>{{ $feedback['feedbackRating'] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

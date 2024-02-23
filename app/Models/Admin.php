@@ -15,8 +15,10 @@ class Admin extends Model
     protected $fillable = [
         'adminName', // Add other fields here as needed
         'adminEmail',
+        'adminPassword'
         // Add other fields here as needed
     ];
+    
 
     // You can define relationships, accessors, mutators, and other methods here if needed
 }

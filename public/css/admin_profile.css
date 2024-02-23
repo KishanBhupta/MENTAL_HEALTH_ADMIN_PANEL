@@ -1,30 +1,9 @@
 
 
-.card {
-    width: 400px; /* Adjust as needed */
-    margin: 279px; /* Centers the card horizontally */
-    margin-top: 30px; /* Adds some space at the top */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
-}
 
-.card-body {
-    padding: 20px; /* Padding inside the card */
-}
 
-.card-title {
-    font-size: 1.25rem; /* Title font size */
-    margin-bottom: 10px; /* Space below title */
-}
 
-.card-text {
-    margin-bottom: 5px; /* Space between each text paragraph */
-}
 
-.btn {
-    margin-top: 15px; /* Space between text and button */
-}
 
 
 

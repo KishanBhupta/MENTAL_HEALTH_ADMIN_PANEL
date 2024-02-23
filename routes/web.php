@@ -31,6 +31,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/profile/show', [AdminProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    // Route::get('/admin/show', 'AdminController@show')->name('layouts.admin.show');
+
 });
 
 
