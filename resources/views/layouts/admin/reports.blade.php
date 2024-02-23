@@ -27,6 +27,7 @@
                                         <th>Reason For Reporting</th>
                                         <th>Status</th>
                                         <th>Reported Date</th>
+                                        <th colspan="2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,6 +38,12 @@
                                         <td>{{$userReport->reportReason}}</td>
                                         <td>{{$userReport->reportStatus}}</td>
                                         <td>{{$userReport->created_at}}</td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-check-circle" aria-hidden="true"></i> Approve</a>
+                                        </td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-times" aria-hidden="true"></i> Reject</a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -60,28 +67,40 @@
                                 <table class="table table-striped table-responsive">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th>Report From</th>
-                                            <th>Reported User</th>
+                                            <th> Report From </th>
+                                            <th>Reported Post</th>
                                             <th>Reason For Reporting</th>
                                             <th>Status</th>
                                             <th>Reported Date</th>
+                                            <th colspan="2" style="text-align: center;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        {{-- <tr>
                                             <td>Report From</td>
-                                            <td>Reported User</td>
+                                            <td>Reported post</td>
                                             <td>Reason For Reporting</td>
                                             <td>Status</td>
                                             <td>Reported Date</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Report From</td>
-                                            <td>Reported User</td>
-                                            <td>Reason For Reporting</td>
-                                            <td>Status</td>
-                                            <td>Reported Date</td>
-                                        </tr>
+                                        </tr> --}}
+
+                                    @foreach ($postReports as $postReport)
+                                    <tr>
+                                         <td>{{$postReport->user->firstName}} {{$postReport->user->lastName}}</td>
+                                        <td>{{$postReport->id}} </td>
+                                       
+                                        <td>{{$postReport->reportReason}}</td>
+                                        <td>{{$postReport->reportStatus}}</td>
+                                        <td>{{$postReport->created_at}}</td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-check-circle" aria-hidden="true"></i> Approve</a>
+                                        </td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-times" aria-hidden="true"></i> Reject</a>
+                                        </td>
+
+                                    </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -104,27 +123,32 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Report From</th>
-                                            <th>Reported User</th>
+                                            <th>Reported Comment</th>
                                             <th>Reason For Reporting</th>
                                             <th>Status</th>
                                             <th>Reported Date</th>
+                                            <th colspan="2">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       
+                                    @foreach ($commentReports as $commentReport)
                                         <tr>
-                                            <td>Report From</td>
-                                            <td>Reported User</td>
-                                            <td>Reason For Reporting</td>
-                                            <td>Status</td>
-                                            <td>Reported Date</td>
+                                             <td>{{$commentReport->user->firstName}}       {{$commentReport->user->lastName}}</td>
+                                            <td>{{$commentReport->reportedComment->commentDescription}} </td>
+                                       
+                                            <td>{{$commentReport->reportReason}}</td>
+                                            <td>{{$commentReport->reportStatus}}</td>
+                                            <td>{{$commentReport->created_at}}</td>
+                                            <td>
+                                            <a href="#"><i class="fa fa-check-circle" aria-hidden="true"></i> Approve</a>
+                                        </td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-times" aria-hidden="true"></i> Reject</a>
+                                        </td>
+
                                         </tr>
-                                        <tr>
-                                            <td>Report From</td>
-                                            <td>Reported User</td>
-                                            <td>Reason For Reporting</td>
-                                            <td>Status</td>
-                                            <td>Reported Date</td>
-                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

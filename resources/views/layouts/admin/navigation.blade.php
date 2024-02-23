@@ -28,7 +28,7 @@
 
           {{-- Categories List --}}
          
-          <li class="nav-header">Reports</li>
+          {{-- <li class="nav-header">Reports</li> --}}
           <li class="nav-item">
             <a href="/" class="nav-link">
               <i class="nav-icon fas fa-home"></i>
@@ -49,12 +49,12 @@
           {{-- Questions  List --}}
 
 
-               <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-plus-circle"></i>
               <p>Journal</p>
             </a>
-          </li>
+          </li> --}}
             <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-list"></i>
