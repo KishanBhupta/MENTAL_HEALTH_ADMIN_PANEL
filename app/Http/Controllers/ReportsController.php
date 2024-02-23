@@ -23,11 +23,13 @@ class ReportsController extends Controller
             "reports.reportedCommentId"=>NULL,
         ])->get();
 
+        
         $commentReports = Reports::with(['user','reportedComment'])->where([
             "reports.reportedPostId"=>NULL,
             "reports.reportedUserId"=>NULL,
         ])->get();
 
+        // dd($commentReports);
         return view(
             'layouts.admin.reports',
             compact(
