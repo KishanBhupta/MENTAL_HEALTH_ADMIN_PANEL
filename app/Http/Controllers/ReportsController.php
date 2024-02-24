@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comments;
+use App\Models\Posts;
 use App\Models\Reports;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -13,78 +16,86 @@ class ReportsController extends Controller
     public function index()
     {
 
-        $userReports = Reports::with(['user',"reportedUser"])->where([
-            "reports.reportedPostId"=>NULL,
-            "reports.reportedCommentId"=>NULL,
+        $userReports = Reports::with(['user', "reportedUser"])->where([
+            "reports.reportedPostId" => NULL,
+            "reports.reportedCommentId" => NULL,
         ])->get();
 
-        $postReports = Reports::with(['user','reportedPosts'])->where([
-            "reports.reportedUserId"=>NULL,
-            "reports.reportedCommentId"=>NULL,
+        $postReports = Reports::with(['user', 'reportedPosts'])->where([
+            "reports.reportedUserId" => NULL,
+            "reports.reportedCommentId" => NULL,
         ])->get();
 
-        
-        $commentReports = Reports::with(['user','reportedComment'])->where([
-            "reports.reportedPostId"=>NULL,
-            "reports.reportedUserId"=>NULL,
+
+        $commentReports = Reports::with(['user', 'reportedComment'])->where([
+            "reports.reportedPostId" => NULL,
+            "reports.reportedUserId" => NULL,
         ])->get();
 
         // dd($commentReports);
         return view(
             'layouts.admin.reports',
             compact(
-                'postReports', 
+                'postReports',
                 'commentReports',
                 'userReports'
-                )
+            )
         );
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    //function to approve user reports
+    function approveUserReport($id)
     {
-        //
+        //changing user block status
+        $user = User::find($id);
+        $user->isBlocked = true;
+        $user->save();
+
+        //change report status to approved
+        Reports::where('reportedUserId', $id)->update([
+            'reportStatus' => 'Approved'
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    //function to delete user reports
+    function deleteUserReport($id)
     {
-        //
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Reports $reports)
-    {
-        //
+    //function to unblock user 
+    function unblockUserReport($id){
+        User::where('id', $id)->update(["isBlocked" => false]);
+        Reports::where('reportedUserId', $id)->update(['reportStatus' => 'Rejected']);
+        return redirect()->back();
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reports $reports)
+    //function to approve post reports
+    function approvePostReport($id)
     {
-        //
+        Posts::where('id', $id)->update(["postStatus" => false]);
+        Reports::where('reportedPostId', $id)->update(["reportStatus" => "Approved"]);
+        return redirect()->back();
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Reports $reports)
+    //function to delete post reports
+    function deletePostReport($id)
     {
-        //
+        Posts::where('id', $id)->update(["postStatus" => true]);
+        Reports::where('reportedPostId', $id)->update(["reportStatus" => "Rejected"]);
+        return redirect()->back();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Reports $reports)
+    //function to approve comment reports
+    function approveCommentReport($id)
     {
-        //
+        Comments::where('id', $id)->update(["commentStatus" =>false]);
+        Reports::where('reportedCommentId', $id)->update(["reportStatus"=>"Approved"]);
+        return redirect()->back();
+    }
+    //function to delete comment reports
+    function deleteCommentReport($id)
+    {
+        Comments::where('id', $id)->update(["commentStatus" =>true]);
+        Reports::where('reportedCommentId', $id)->update(["reportStatus" => "Rejected"]);
+        return redirect()->back();
     }
 }
