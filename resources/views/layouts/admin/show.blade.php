@@ -55,7 +55,6 @@
         </div>
     </div>
 </div>
-@endsection
 
 
 <!-- Modal for editing profile -->
@@ -93,3 +92,4 @@
         </div>
     </div>
 </div>
+@endsection

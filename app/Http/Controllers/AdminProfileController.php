@@ -35,8 +35,7 @@ class AdminProfileController extends Controller
         if ($validatedData['old_password'] !== $admin->adminPassword) {
             return redirect()->back()->with('error', 'The old password is incorrect.');
         }
-        
-
+    
         // Update admin password
         $admin->adminPassword = $validatedData['password'];
         $admin->save();

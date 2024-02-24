@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin_master')
 
-@section('main-sidebar')
+@section('sidebar')
     @include('layouts.admin.navigation')
 @endsection
 
