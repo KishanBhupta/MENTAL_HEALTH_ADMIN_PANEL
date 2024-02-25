@@ -9,9 +9,7 @@ class AppFeedbacksController extends Controller
 {
     public function index()
     {
-        $feedbacks = AppFeedbacks::with('user')->get();
-
-        // $feedbacks = AppFeedbacks::all();
+        $feedbacks = AppFeedbacks::with('user')->get()->reverse();
         return view('layouts.admin.index', compact('feedbacks'));
     }
 

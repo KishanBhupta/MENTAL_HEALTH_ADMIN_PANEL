@@ -36,8 +36,6 @@ Route::prefix('admin')->group(function () {
 
 
 Route::get('admin/feedbacks', [AppFeedbacksController::class, 'index'])->name('admin.feedback.index');
-// Route::prefix('admin')->group(function () {
-// });
 
 /// manage report routes
 // manage user report routes
