@@ -13,6 +13,13 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('adminres/dist/css/adminlte.min.css')}}">
+  <!-- Admin profile style -->
+  <link href="{{ asset('css/admin_profile.css') }}" rel="stylesheet">  
+
+
+  <!-- Add this in your layout file to include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 
    <!-- Google Font: Source Sans Pro -->
    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -87,6 +94,12 @@
 <!-- ./wrapper -->
 
 @yield('additional-jScripts')
+
+
+<!-- Add this before closing the body tag to include Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 
 <!-- jQuery -->
 <script src="{{asset('adminres/plugins/jquery/jquery.min.js')}}"></script>

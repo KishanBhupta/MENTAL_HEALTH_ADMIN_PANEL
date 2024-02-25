@@ -10,8 +10,14 @@ class AppFeedbacks extends Model
     use HasFactory;
 
     protected $fillable = [
-        "users_id",
+        "firstName",
         "feedbackData",
         "feedbackRating"
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
 }

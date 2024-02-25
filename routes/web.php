@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\AppFeedbacksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +22,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[DashboardController::class,'index']);
 //reports page
 Route::get('/reports',[ReportsController::class,'index']);
+
+
+Route::get('/admin', function () {
+    return view('layouts.admin.home');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/profile/show', [AdminProfileController::class, 'show'])->name('admin.profile.show');
+    Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+});
+
+
+Route::get('admin/feedbacks', [AppFeedbacksController::class, 'index'])->name('admin.feedback.index');
+// Route::prefix('admin')->group(function () {
+// });
+
 /// manage report routes
 // manage user report routes
 Route::get('/approveUserReport/{id}',[ReportsController::class,'approveUserReport']);
@@ -31,3 +50,4 @@ Route::get('/deletePostReport/{id}',[ReportsController::class,'deletePostReport'
 // manage comment report routes
 Route::get('/approveCommentReport/{id}',[ReportsController::class,'approveCommentReport']);
 Route::get('/deleteCommentReport/{id}',[ReportsController::class,'deleteCommentReport']);
+
