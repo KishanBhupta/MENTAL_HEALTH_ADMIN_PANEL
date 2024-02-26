@@ -5,57 +5,79 @@
 @endsection
 
 <style>
-    /* Styles for the custom card */
+    /* Styles for the admin profile section */
     .content-wrapper {
-        padding: 3px; /* Add padding around the content */
-        padding-right: 490px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px 20px;
     }
-    .custom-card {
-        width: 400px; /* Adjust as needed */
-        margin: auto; /* Centers the card horizontally */
-        margin-top: 30px; /* Adds some space at the top */
-        border: 1px solid #ccc; /* Border color */
-        border-radius: 18px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    .card {
+        width: 1380px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        overflow: hidden; /* Hide overflowing content */
     }
-
-    .custom-card .card-body {
-        padding: 25px; /* Padding inside the card */
+    .profile-section {
+        display: flex;
+        align-items: center;
+        padding: 20px;
     }
-
-    .custom-card .card-title {
-        font-size: 2.6rem; /* Title font size */
-        margin-bottom: 10px; /* Space below title */
+    .profile-photo {
+        width: 140px; /* Adjust size as needed */
+        height: 140px; /* Adjust size as needed */
+        border-radius: 50%; /* Make it round */
+        background-image: url('path/to/profile-photo.jpg'); /* Specify profile photo image */
+        background-size: cover;
+        background-position: left;
+        margin-right: 20px;
     }
-
-    .custom-card .card-text {
-        margin-bottom: 5px; /* Space between each text paragraph */
+    .profile-details .card-title {
+        font-size: 40px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    } 
+    .card-text {
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-right: 370px;
+        color: #555;
     }
-
-    .custom-card .btn {
-        margin-top: 15px; /* Space between text and button */
+    .btn {
+        padding: 0px 0px 10px 20px; /* Adjust top padding to move the button up */
+        border: none;
+        margin-top: 10px;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+        background-color: #0056b3;
     }
 </style>
 
 @section('content')
 <div class="content-wrapper">
-    <div class="custom-card">
-        <div class="card-body">
-            <h5 class="card-title">Admin Profile</h5>
-            <p class="card-text">ID: {{ $admin[0]->id }}</p>
-            <p class="card-text">Name: {{ $admin[0]->adminName }}</p>
-            <p class="card-text">Email: {{ $admin[0]->adminEmail }}</p>
-            <p class="card-text">Created_at: {{ $admin[0]->created_at }}</p>
-            <p class="card-text">Updated_at: {{ $admin[0]->updated_at }}</p>
-            <br>
-            <!-- Button to trigger the modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
-                Change Password
-            </button>
+    {{-- Profile table --}}
+    <div class="card">
+        <div class="profile-section">
+            <div class="profile-photo" style="background-image: url('{{ asset('images/profile/profile-photo.jpg') }}')"></div>
+            <div class="profile-details">
+                <h2 class="card-title">Admin Profile</h2>
+                <p class="card-text">Name:   {{ $admin[0]->adminName }}</p>
+                <p class="card-text">Email:   {{ $admin[0]->adminEmail }}</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Change Password</button>
         </div>
     </div>
+    {{-- End of Profile table --}}
 </div>
-
 
 <!-- Modal for editing profile -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">

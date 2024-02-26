@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-
 
 class AdminProfileController extends Controller
 {
@@ -39,9 +36,6 @@ class AdminProfileController extends Controller
         // Update admin password
         $admin->adminPassword = $validatedData['password'];
         $admin->save();
-
-        return redirect()->route('admin.profile.show')->with('success', 'Password updated successfully');
+        return redirect()->back()->with('success', 'password is successfully updated.'); // Redirect back to the same page
     }        
-
-
 }
