@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AppFeedbacksController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 /* admin routes starts */
+Route::get('/adminlogin',function() {
+    return view('layouts.admin.adminlogin');
+});
+
+Route::get('/adminlogin',[AdminController::class,'adlogin'])->name("adlogin");
+Route::get('/admincomplete',[AdminController::class,'getData'])->name("getData");
+Route::post('/admincomplete', [AdminController::class, 'getData'])->name('admincomplete');
+Route::get('/adminlogin', [AdminController::class, 'logout'])->name('logout');
+
+
 //route to return index page ( Dashboard )
 Route::get('/',[DashboardController::class,'index']);
 //reports page
@@ -48,4 +59,5 @@ Route::get('/deletePostReport/{id}',[ReportsController::class,'deletePostReport'
 // manage comment report routes
 Route::get('/approveCommentReport/{id}',[ReportsController::class,'approveCommentReport']);
 Route::get('/deleteCommentReport/{id}',[ReportsController::class,'deleteCommentReport']);
+
 

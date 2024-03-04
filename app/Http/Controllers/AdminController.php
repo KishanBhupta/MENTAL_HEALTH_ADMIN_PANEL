@@ -7,59 +7,34 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function adlogin(){
+        return view('layouts.admin.adminlogin');
+     }
+ 
+     public function getData(Request $request){
+         $request->validate([
+             'adminEmail' => 'required|email',
+             'adminPassword' => 'required',
+         ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+         $adminEmail = $request->input('adminEmail');
+         $adminPassword = $request->input('adminPassword');
+ 
+         $admin = Admin::where('adminEmail', $adminEmail)->first();
+ 
+         if($admin && $admin->adminPassword === $adminPassword){
+            // Authentication passed...
+            $request->session()->put('adminEmail', $adminEmail);
+            return redirect('/'); // Redirect to the desired page after successful login
+        }
+        else{
+            // Invalid credentials
+            return redirect()->back()->withErrors(['adminEmail' => 'Incorrect email or password.']);
+        }
+     }
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin $admin)
-    {
-        //
+        return view('layouts.admin.adminlogin');
     }
 }
