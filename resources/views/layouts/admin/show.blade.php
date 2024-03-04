@@ -70,14 +70,15 @@
             <div class="profile-photo" style="background-image: url('{{ asset('images/profile/profile-photo.jpg') }}')"></div>
             <div class="profile-details">
                 <h2 class="card-title">Admin Profile</h2>
-                <p class="card-text">Name:   {{ $admin[0]->adminName }}</p>
-                <p class="card-text">Email:   {{ $admin[0]->adminEmail }}</p>
+                <p class="card-text">Name:   {{ $admin->adminName }}</p>
+                <p class="card-text">Email:   {{ $admin->adminEmail }}</p>
             </div>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Change Password</button>
         </div>
     </div>
     {{-- End of Profile table --}}
 </div>
+
 
 <!-- Modal for editing profile -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
