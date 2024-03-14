@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'signIn']);
 Route::get('/getLoggedInUser',[AuthController::class, 'login'])->middleware('auth:api');
+// Route::get('/getfeedback',[AuthController::class, 'getfeedback']);
+Route::post('/storeFeedback',[AuthController::class, 'storeFeedback']);
+

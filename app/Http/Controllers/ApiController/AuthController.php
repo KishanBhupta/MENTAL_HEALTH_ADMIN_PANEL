@@ -5,6 +5,8 @@ namespace App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\AppFeedBacks;
+
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
@@ -88,4 +90,28 @@ class AuthController extends Controller
         }
         return response(['message' => $message, 'status' => 'error'], $statusCode);
     }
+
+    // static function getfeedback(Request $request){
+    //    $feedback = AppFeedBacks::all();
+    //     return response($feedback, 200);
+    // }
+
+ static function storeFeedback(Request $request){
+    try {
+        $feedback = json_decode($request->getContent());
+
+        $data = [
+            'users_id' => $feedback->users_id,
+            'feedbackData' => $feedback->feedbackData,
+            'feedbackRating' => $feedback->feedbackRating
+        ];
+        
+        $newFeedback = AppFeedBacks::create($data);
+
+        return response(['message' => 'Feedback created successfully'], 200);
+    } catch (Exception $e) {
+        return response(['message' => 'Failed to store feedback'], 500);
+    }
+}
+
 }

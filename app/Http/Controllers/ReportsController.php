@@ -19,18 +19,18 @@ class ReportsController extends Controller
         $userReports = Reports::with(['user', "reportedUser"])->where([
             "reports.reportedPostId" => NULL,
             "reports.reportedCommentId" => NULL,
-        ])->get();
+        ])->get()->reverse();
 
         $postReports = Reports::with(['user', 'reportedPosts'])->where([
             "reports.reportedUserId" => NULL,
             "reports.reportedCommentId" => NULL,
-        ])->get();
+        ])->get()->reverse();
 
 
         $commentReports = Reports::with(['user', 'reportedComment'])->where([
             "reports.reportedPostId" => NULL,
             "reports.reportedUserId" => NULL,
-        ])->get();
+        ])->get()->reverse();
 
         // dd($commentReports);
         return view(

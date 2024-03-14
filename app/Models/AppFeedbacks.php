@@ -10,7 +10,7 @@ class AppFeedbacks extends Model
     use HasFactory;
 
     protected $fillable = [
-        "firstName",
+        "users_id",
         "feedbackData",
         "feedbackRating"
     ];
