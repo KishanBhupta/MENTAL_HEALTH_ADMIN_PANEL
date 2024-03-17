@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SavedPosts extends Model
 {
     use HasFactory;
+
+    public $fillable = [
+        "users_id",
+        "posts_id",
+    ];
 }

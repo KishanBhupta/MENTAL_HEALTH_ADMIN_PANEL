@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use App\Http\Controllers\ApiController\AuthController;
 
 class AppFeedbacksController extends Controller
 {
@@ -18,25 +19,33 @@ class AppFeedbacksController extends Controller
     }
 
 
- static function storeFeedback(Request $request){
-    try {
-        $feedback = json_decode($request->getContent());
+    static function storeFeedback(Request $request)
+    {
+        try {
+            $feedback = json_decode($request->getContent());
 
-        $data = [
-            'users_id' => $feedback->users_id,
-            'feedbackData' => $feedback->feedbackData,
-            'feedbackRating' => $feedback->feedbackRating
-        ];
-        
-        $newFeedback = AppFeedBacks::create($data);
+            if (is_int($feedback->users_id)) {
+                $data = [
+                    'users_id' => $feedback->users_id,
+                    'feedbackData' => $feedback->feedbackData,
+                    'feedbackRating' => $feedback->feedbackRating
+                ];
 
-        return response(['message' => 'Feedback created successfully'], 200);
-    } catch (Exception $exception) {
+                AppFeedBacks::create($data);
+
+                return response(['message' => 'Feedback created successfully']);
+            }
+
+            else {
+                return response(["error"=>"true",'message' => 'Provided User id is string please provide valid user id'],400);
+            }
+
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
-}
+    }
 
- static function handleExceptions(Exception $exception)
+    static function handleExceptions(Exception $exception)
     {
         $exceptionCode = $exception->getCode();
         $message = "";
@@ -49,10 +58,10 @@ class AppFeedbacksController extends Controller
             case 500:
                 $message = "Something went wrong!, please try again later.";
                 $statusCode = 500;
-            // case 23000:
-            //     $message = "User with same email already exists";
-            //     $statusCode = 422;
-            //     break;
+                // case 23000:
+                //     $message = "User with same email already exists";
+                //     $statusCode = 422;
+                //     break;
             default:
                 $message = "The requested page does not exist";
                 $statusCode = 500;
@@ -60,5 +69,4 @@ class AppFeedbacksController extends Controller
         }
         return response(['message' => $message, 'status' => 'error'], $statusCode);
     }
-
 }
