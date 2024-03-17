@@ -5,6 +5,10 @@ namespace App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\AppFeedBacks;
+use App\Models\Posts;
+
+
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
@@ -86,6 +90,7 @@ class AuthController extends Controller
                 $statusCode = 500;
                 break;
         }
-        return response(['message' => $message, 'status' => 'error'], $statusCode);
+        return response(['message' => $message, 'exception'=>$exception , 'status' => 'error'], $statusCode);
     }
+
 }

@@ -30,7 +30,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @if ($userReports!=[])
+                                @if ($userReports != [])
                                     <tbody>
                                         @foreach ($userReports as $userReport)
                                             <tr>
@@ -44,18 +44,18 @@
                                                 <td>
                                                     @if ($userReport->reportStatus != 'Approved' && $userReport->reportStatus != 'Rejected')
                                                         <a href="/approveUserReport/{{ $userReport->reportedUser->id }}"
-                                                            class="btn btn-success"><i class="fa fa-check-circle"
-                                                                aria-hidden="true"></i></a>
+                                                            class="btn btn-success" title="Reject"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i></a>
                                                     @endif
-                                                    @if($userReport->reportStatus == 'Rejected')
-                                                    <a href="/approveUserReport/{{ $userReport->reportedUser->id }}"
-                                                        class="btn btn-success"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i> </a>
+                                                    @if ($userReport->reportStatus == 'Rejected')
+                                                        <a href="/approveUserReport/{{ $userReport->reportedUser->id }}"
+                                                            class="btn btn-success" title="Accept"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i> </a>
                                                     @endif
                                                     @if ($userReport->reportStatus == 'Approved')
                                                         <a href="/unblockUserReport/{{ $userReport->reportedUser->id }}"
-                                                            class="btn btn-info"><i class="fa fa-user-times"
-                                                                aria-hidden="true"></i>     </a>
+                                                            class="btn btn-info" title="Block"><i class="fa fa-user-times"
+                                                                aria-hidden="true"></i> </a>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -104,15 +104,15 @@
                                                 <td>
                                                     @if ($postReport->reportStatus != 'Approved')
                                                         <a href="/approvePostReport/{{ $postReport->reportedPostId }}"
-                                                            class="btn btn-success w-100"><i class="fa fa-check-circle"
-                                                                aria-hidden="true"></i>
+                                                            class="btn btn-success w-100" title="Approved"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i>
                                                             {{-- Approve --}}
                                                         </a>
                                                     @endif
                                                     @if ($postReport->reportStatus != 'Rejected')
                                                         <a href="/deletePostReport/{{ $postReport->reportedPostId }}"
-                                                            class="btn btn-danger w-100"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>
+                                                            class="btn btn-danger w-100" title="Rejected"><i
+                                                                class="fa fa-times" aria-hidden="true"></i>
                                                             {{-- Reject --}}
                                                         </a>
                                                     @endif
@@ -160,15 +160,15 @@
                                                 <td>
                                                     @if ($commentReport->reportStatus != 'Approved')
                                                         <a href="/approveCommentReport/{{ $commentReport->reportedComment->id }}"
-                                                            class="btn btn-success w-100"><i class="fa fa-check-circle"
-                                                                aria-hidden="true"></i>
+                                                            class="btn btn-success w-100" title="Approved"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i>
                                                             {{-- Approve --}}
                                                         </a>
                                                     @endif
                                                     @if ($commentReport->reportStatus != 'Rejected')
                                                         <a href="/deleteCommentReport/{{ $commentReport->reportedComment->id }}"
                                                             class="btn btn-danger w-100"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>
+                                                                aria-hidden="true" title="Rejected"></i>
                                                             {{-- Reject --}}
                                                         </a>
                                                     @endif

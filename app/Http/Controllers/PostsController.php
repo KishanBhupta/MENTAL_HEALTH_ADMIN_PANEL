@@ -4,62 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController\AuthController;
+
+use Exception;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
 
 class PostsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+static function getPost(){
+    $post = Posts::all();
+     return response()->json($post);
+}
+
+static function createPost(Request $request){
+    try{
+        $post = json_decode($request->getContent());
+        $data = [] ; 
+
+        $data['users_id'] = $post->users_id;
+        $data['imageUrl'] = $post->imageUrl;
+        $data['postText'] = $post->postText;
+        $data['postDescription'] = $post->postDescription;
+        $data['isAnonymous'] = $post->isAnonymous;
+        $data['likes'] = $post->likes;
+        $data['postStatus'] = $post->postStatus;
+
+        Posts::create($data);
+        return response(['message' => 'Post Created '], 200);
+
+    }
+     catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    static function deletePost($id){
+        try{
+            $post = Posts::Find($id);
+            $post->delete();
+            // return response($post);
+            return response(['message' => "Post delete Sucessflly "], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Posts $posts)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Posts $posts)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Posts $posts)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Posts $posts)
-    {
-        //
+      catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 }
