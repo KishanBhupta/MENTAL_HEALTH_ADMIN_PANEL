@@ -5,61 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Comments;
 use Illuminate\Http\Request;
 
+use Exception;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+
 class CommentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+   static function getAllComments(){
+    $comments = Comments::all();
+    return responce($comments,200);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+   }
+   static function handleExceptions(Exception $exception)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comments $comments)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comments $comments)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Comments $comments)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comments $comments)
-    {
-        //
+        $exceptionCode = $exception->getCode();
+        $message = "";
+        $statusCode = 0;
+        switch ($exceptionCode) {
+            case 404:
+                $message = "The requested page does not exist";
+                $statusCode = 404;
+                break;
+            case 500:
+                $message = "Something went wrong!, please try again later.";
+                $statusCode = 500;
+            case 23000:
+                $message = "User with same email already exists";
+                $statusCode = 422;
+                break;
+            default:
+                $message = "The requested page does not exist";
+                $statusCode = 500;
+                break;
+        }
+        return response(['message' => $message, 'status' => 'error'], $statusCode);
     }
 }
