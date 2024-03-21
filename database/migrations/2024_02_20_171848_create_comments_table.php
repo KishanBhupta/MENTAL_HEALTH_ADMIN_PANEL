@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('isAnonymous');
+            $table->unsignedBigInteger('likes')->nullable();
             $table->string('commentDescription');
             $table->boolean('commentStatus');
             $table->timestamps();

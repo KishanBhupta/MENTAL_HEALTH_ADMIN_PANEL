@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comments extends Model
+class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        "posts_id",
+    public $fillable = [
         "users_id",
-        "isAnonymous",
-        "commentDescription",
-        "likes",
-        "commentStatus",
+        "title",
+        "body"
     ];
 }

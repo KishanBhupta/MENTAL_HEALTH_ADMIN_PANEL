@@ -4,9 +4,12 @@ use App\Http\Controllers\ApiController\AuthController;
 use App\Http\Controllers\ApiController\UserProfileController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AppFeedBacksController;
+use App\Http\Controllers\BlockUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,25 +44,65 @@ Route::group(["middleware" => "auth:api"], function () {
     // remove like to post
     Route::get('/posts/removeLike/{id}', [PostsController::class, 'removeLike']);
     // save post
-    Route::post('/posts/savePost', [PostsController::class,'savePost']);
+    Route::post('/posts/savePost', [PostsController::class, 'savePost']);
     // un save post
     Route::post('/posts/unsavePost', [PostsController::class, 'unSavePost']);
     // get saved post
-    Route::get('posts/getSavedPosts',[PostsController::class,'getSavedPosts']);
+    Route::get('posts/getSavedPosts', [PostsController::class, 'getSavedPosts']);
 
     // user profiles routes
-    Route::post('/profile/myProfile/posts',[UserProfileController::class, 'myPosts']);
+    Route::post('/profile/myProfile/posts', [UserProfileController::class, 'myPosts']);
     // users anonymous posts
-    Route::post('/profile/myProfile/posts/anonymousPosts',[UserProfileController::class,'myAnonymousPosts']);
+    Route::post('/profile/myProfile/posts/anonymousPosts', [UserProfileController::class, 'myAnonymousPosts']);
     // update my profile
-    Route::post('/profile/myProfile/updateMyProfile',[UserProfileController::class,"updateMyProfile"]);
+    Route::post('/profile/myProfile/updateMyProfile', [UserProfileController::class, "updateMyProfile"]);
     // change password
-    Route::post('/profile/myProfile/changePassword',[UserProfileController::class,'changePassword']);
+    Route::post('/profile/myProfile/changePassword', [UserProfileController::class, 'changePassword']);
     // get other users profile 
-    Route::post('/profile/userProfile',[UserProfileController::class, 'userProfile']);
+    Route::post('/profile/userProfile', [UserProfileController::class, 'userProfile']);
     // get other users posts
-    Route::post('/profile/userProfile/posts',[UserProfileController::class, 'usersPost']);
+    Route::post('/profile/userProfile/posts', [UserProfileController::class, 'usersPost']);
+    // user serch route
+    Route::post('/users/search', [UserProfileController::class, 'searchUserByName']);
 
+    //// reports routes
+
+    // report user
+    Route::post('/reports/user', [ReportsController::class, 'reportUser']);
+    // report comment
+    Route::post('/reports/comment', [ReportsController::class, 'reportComment']);
+    // report post
+    Route::post('/reports/post', [ReportsController::class, 'reportPost']);
+
+    //// comments apis
+
+    // add comment
+    Route::post('/posts/comments/add', [CommentsController::class, 'addComment']);
+
+    // delete comment
+    Route::get("/posts/comments/delete/{id}", [CommentsController::class, 'deleteComment']);
+
+    // like comment
+    Route::get("/posts/comments/like/{id}", [CommentsController::class, 'likeComment']);
+
+    // dislike comment
+    Route::get("/posts/comments/dislike/{id}", [CommentsController::class, 'dislikeComment']);
+
+    /// notification 
+
+    // add notification
+    Route::post('/notifications/add', [NotificationController::class,'addNotification']);
+
+    /// Block User 
+
+    // add block user
+    Route::post("users/block/add",[BlockUserController::class, 'addBlockUser']);
+
+    // show user
+    Route::get("/users/block/showBlockUsers/{id}",[BlockUserController::class, 'showBlockUsers']);
+
+    // unblock user
+    Route::post("/users/block/unblock",[BlockUserController::class, 'unblockUser']);
 });
 
 // Authenctions routes
@@ -67,7 +110,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'signIn']);
 
 // comments routes
-
 Route::get('/getcomment', [CommentsController::class, 'getAllComments']);
 
 

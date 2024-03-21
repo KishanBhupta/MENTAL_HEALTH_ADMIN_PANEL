@@ -90,6 +90,20 @@ class UserProfileController extends Controller
         }catch(Exception $exception){
             return AuthController::handleExceptions($exception);
         }
+    }
 
+    // funciton to search user by their name
+    static function searchUserByName(Request $request){
+        try{
+
+            $data =  json_decode($request->getContent());
+
+            $users = User::where('firstName','like',"%{$data->search}%")->orWhere('lastName','like',"%{$data->search}%")->get();
+
+            return response($users);
+
+        }catch(Exception $exception){
+            return AuthController::handleExceptions($exception);
+        }
     }
 }
