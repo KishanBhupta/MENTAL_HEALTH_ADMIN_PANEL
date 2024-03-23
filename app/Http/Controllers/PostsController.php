@@ -29,12 +29,14 @@ class PostsController extends Controller
             $post = json_decode($request->getContent());
             $data = [];
             $data['users_id'] = $post->users_id;
-            $data['imageUrl'] = $post->imageUrl;
+            // $data['imageUrl'] = $post->imageUrl;
             $data['postText'] = $post->postText;
             $data['postDescription'] = $post->postDescription;
             $data['isAnonymous'] = $post->isAnonymous;
             $data['likes'] = 0;
             $data['postStatus'] = 1;
+
+
 
             Posts::create($data);
             return response(['message' => 'Post Created '], 200);

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\FollowersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,9 @@ Route::group(["middleware" => "auth:api"], function () {
 
     //// comments apis
 
+    // comments routes
+    Route::get('/getcomment', [CommentsController::class, 'getAllComments']);
+    
     // add comment
     Route::post('/posts/comments/add', [CommentsController::class, 'addComment']);
 
@@ -103,14 +107,26 @@ Route::group(["middleware" => "auth:api"], function () {
 
     // unblock user
     Route::post("/users/block/unblock",[BlockUserController::class, 'unblockUser']);
+
+    /// Followers apis
+
+    // get follower count
+    Route::get("/followers/followCount/{id}",[FollowersController::class,'getFollowersCount']);
+
+    // send following request
+    Route::post("/followers/sendRequest",[FollowersController::class,'sendFollowingRequest']);
+
+    // accept following request
+    Route::post("/followers/acceptRequest",[FollowersController::class,'acceptFollowRequest']);
+
+    // remove following request or follower
+    Route::post("/followers/removeFollower",[FollowersController::class,"removeRequestOrRemoveFollower"]);
+    
+
 });
 
 // Authenctions routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'signIn']);
 
-// comments routes
-Route::get('/getcomment', [CommentsController::class, 'getAllComments']);
 
-
-// comments routes

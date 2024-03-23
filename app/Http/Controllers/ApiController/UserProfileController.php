@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ApiController;
 
 use App\Http\Controllers\Controller;
+use App\Models\Followers;
 use App\Models\User;
 use App\Models\Posts;
 use Illuminate\Http\Request;
@@ -41,11 +42,26 @@ class UserProfileController extends Controller
     static function userProfile(Request $request)
     {
         try {
+            $user = auth()->guard('api')->user();
+
             $data = json_decode($request->getContent());
             // Getting other user's profile to get his data for screen
             $userAccounts = User::where('id', $data->users_id)->first();
             // returning user's profile
-            return response($userAccounts);
+
+            $following = Followers::where('users_id', $userAccounts->id)->where("followerId", $user->id)->first();
+
+            if ($following != null) {
+                $isRequested = $following->isRequested;
+                $isFollowing = $following->isFollowing;
+            }else{
+                $isRequested = 0;
+                $isFollowing = 0;
+            }
+
+
+            return response(["userProfile"=>$userAccounts,"isfollowing"=>$isFollowing,"isRequested"=>$isRequested]);
+
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -62,8 +78,9 @@ class UserProfileController extends Controller
         }
     }
 
-    static function updateMyProfile(Request $request){
-        try{
+    static function updateMyProfile(Request $request)
+    {
+        try {
             $data = json_decode($request->getContent());
             $user = User::find($data->id);
             $user->update([
@@ -72,37 +89,37 @@ class UserProfileController extends Controller
                 "email" => $data->email,
                 "phoneNumber" => $data->phoneNumber
             ]);
-            return response(["message" => "Profile updated successfully","user"=>$user]);
-        }catch(Exception $exception){
+            return response(["message" => "Profile updated successfully", "user" => $user]);
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }
 
-    static function changePassword(Request $request){
-        try{
+    static function changePassword(Request $request)
+    {
+        try {
             $data = json_decode($request->getContent());
 
             $user = User::find($data->id);
             $user->password = Hash::make($data->password);
             $user->update();
             return response(["message" => "Password changed successfully"]);
-            
-        }catch(Exception $exception){
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }
 
     // funciton to search user by their name
-    static function searchUserByName(Request $request){
-        try{
+    static function searchUserByName(Request $request)
+    {
+        try {
 
             $data =  json_decode($request->getContent());
 
-            $users = User::where('firstName','like',"%{$data->search}%")->orWhere('lastName','like',"%{$data->search}%")->get();
+            $users = User::where('firstName', 'like', "%{$data->search}%")->orWhere('lastName', 'like', "%{$data->search}%")->get();
 
             return response($users);
-
-        }catch(Exception $exception){
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }

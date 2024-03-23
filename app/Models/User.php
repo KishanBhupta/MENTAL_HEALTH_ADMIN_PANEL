@@ -23,7 +23,9 @@ class User extends Authenticatable
         "email",
         "password",
         "phoneNumber",
-        "isBlocked"
+        "isBlocked",
+        "userName",
+        "profileImage"
     ];
 
     /**

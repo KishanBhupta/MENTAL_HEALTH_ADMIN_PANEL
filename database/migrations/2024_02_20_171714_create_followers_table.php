@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('followerId');
             $table->foreign('users_id')->references('id')->on('users');
             $table->boolean('isFollowing');
-            $table->boolean('isRequeested');
+            $table->boolean('isRequested');
             $table->timestamps();
         });
     }

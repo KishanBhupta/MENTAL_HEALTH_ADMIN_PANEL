@@ -2,64 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ApiController\AuthController;
 use App\Models\Followers;
+use Exception;
 use Illuminate\Http\Request;
 
 class FollowersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+
+    // send following request
+    static function sendFollowingRequest(Request $request)
     {
-        //
+
+        try {
+            $follower = json_decode($request->getContent());
+
+            $data['users_id'] = $follower->users_id;
+            $data['followerId'] = $follower->follower_id;
+            $data['isFollowing'] = false;
+            $data['isRequested'] = true;
+
+            Followers::create($data);
+
+            return response(['status' => 'success', 'message' => 'Request Sent Successfully']);
+        } catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // add new follower
+    static function acceptFollowRequest(Request $request)
     {
-        //
+        try {
+            $data = json_decode($request->getContent());
+
+            $follower = Followers::where(['users_id' => $data->users_id, 'followerId' => $data->follower_id])->first();
+
+            $follower->update([
+                "isFollowing" => true,
+                "isRequested" => false,
+            ]);
+
+            return response(['status' => 'success', 'message' => 'Request Accepted']);
+        } catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    static function getFollowersCount($id)
     {
-        //
+
+        try {
+            $followersCount = Followers::where("users_id", $id)->count();
+            return response(['status' => 'success', 'followers_count' => $followersCount]);
+        } catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Followers $followers)
+    static function removeRequestOrRemoveFollower(Request $request)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Followers $followers)
-    {
-        //
-    }
+        try {
+            $data = json_decode($request->getContent());
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Followers $followers)
-    {
-        //
-    }
+            $follower = Followers::where(["users_id" => $data->users_id, "followerId" => $data->follower_id])->first();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Followers $followers)
-    {
-        //
+            $follower->delete();
+
+            return response(['status' => 'success', 'message' => 'Follower Removed']);
+        } catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
     }
 }

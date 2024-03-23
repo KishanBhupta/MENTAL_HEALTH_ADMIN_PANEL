@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
-            $user = json_decode($request->getContent());
+            $user = $request;
 
             $data = [];
 
@@ -30,10 +30,22 @@ class AuthController extends Controller
             $data['phoneNumber'] = $user->phoneNumber;
             $data['password'] = Hash::make($user->password);
             $data['isBlocked'] = $user->isBlocked;
+            $data['userName'] = $user->userName;
 
-            $newUser = User::create($data);
+            // upload user profile image if there is one 
+            if($user->hasFile('profileImage')){
+                $destination = "public/profileImages";
+                $image = $request->file('profileImage');
+                $image_name = $image->getClientOriginalName();
+                $image->storeAs($destination,$image_name);
+                $baseUrl = url('');
+                $data['profileImage'] = $baseUrl."/storage/profileImages/".$image_name;
+            }
+            
+            User::create($data);
 
-            return response(['message' => 'User created successfully'], 200);
+            return response(['status'=>'success','message' => 'User created successfully'], 200);
+
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -60,11 +72,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-            
         $user = auth()->guard('api')->user();
-        
         return response($user, 200);
-
     }
 
 
