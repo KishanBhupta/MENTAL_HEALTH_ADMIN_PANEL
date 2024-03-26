@@ -36,7 +36,14 @@ class PostsController extends Controller
             $data['likes'] = 0;
             $data['postStatus'] = 1;
 
-
+            if($post->hasFile('ImageUrl')){
+                $destination = "public/postsImages";
+                $image = $request->file('ImageUrl');
+                $image_name = $image->getClientOriginalName();
+                $image->storeAs($destination,$image_name);
+                $baseUrl = url('');
+                $data['ImageUrl'] = $baseUrl."/storage/postsImages/".$image_name;
+            }
 
             Posts::create($data);
             return response(['message' => 'Post Created '], 200);
