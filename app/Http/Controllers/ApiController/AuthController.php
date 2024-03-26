@@ -41,7 +41,6 @@ class AuthController extends Controller
                 $baseUrl = url('');
                 $data['profileImage'] = $baseUrl."/storage/profileImages/".$image_name;
             }
-            
             User::create($data);
 
             return response(['status'=>'success','message' => 'User created successfully'], 200);

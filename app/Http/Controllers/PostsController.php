@@ -36,13 +36,13 @@ class PostsController extends Controller
             $data['likes'] = 0;
             $data['postStatus'] = 1;
 
-            if($post->hasFile('ImageUrl')){
+            if($post->hasFile('imageUrl')){
                 $destination = "public/postsImages";
-                $image = $request->file('ImageUrl');
+                $image = $request->file('imageUrl');
                 $image_name = $image->getClientOriginalName();
                 $image->storeAs($destination,$image_name);
                 $baseUrl = url('');
-                $data['ImageUrl'] = $baseUrl."/storage/postsImages/".$image_name;
+                $data['imageUrl'] = $baseUrl."/storage/postsImages/".$image_name;
             }
 
             Posts::create($data);

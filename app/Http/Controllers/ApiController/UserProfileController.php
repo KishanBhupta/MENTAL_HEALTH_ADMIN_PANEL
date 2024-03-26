@@ -54,14 +54,13 @@ class UserProfileController extends Controller
             if ($following != null) {
                 $isRequested = $following->isRequested;
                 $isFollowing = $following->isFollowing;
-            }else{
+            } else {
                 $isRequested = 0;
                 $isFollowing = 0;
             }
 
 
-            return response(["userProfile"=>$userAccounts,"isfollowing"=>$isFollowing,"isRequested"=>$isRequested]);
-
+            return response(["userProfile" => $userAccounts, "isfollowing" => $isFollowing, "isRequested" => $isRequested]);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -95,6 +94,36 @@ class UserProfileController extends Controller
         }
     }
 
+
+    // function to update profile picture
+    static function updateProfilePicture(Request $request)
+    {
+        try {
+
+            $user = $request;
+
+            // upload user profile image if there is one 
+            if ($user->hasFile('profileImage')) {
+                $destination = "public/profileImages";
+                $image = $request->file('profileImage');
+                $image_name = $image->getClientOriginalName();
+                $image->storeAs($destination, $image_name);
+                $baseUrl = url('');
+                $imageUrl = $baseUrl . "/storage/profileImages/" . $image_name;
+            }
+
+            $updateUser = User::find($user->id);
+            $updateUser->update(["profileImage" => $imageUrl]);
+
+            return response(['status'=>"success",'message'=>'Profile picture updated','newImageUrl'=>$imageUrl]);
+
+        } catch (Exception $exception) {
+            return AuthController::handleExceptions($exception);
+        }
+    }
+
+
+    // function to update password
     static function changePassword(Request $request)
     {
         try {

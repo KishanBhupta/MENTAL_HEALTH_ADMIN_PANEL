@@ -65,6 +65,8 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('/profile/userProfile/posts', [UserProfileController::class, 'usersPost']);
     // user serch route
     Route::post('/users/search', [UserProfileController::class, 'searchUserByName']);
+    // update user profile picture
+    Route::post('/profile/updateProfilePicture', [UserProfileController::class,'updateProfilePicture']);
 
     //// reports routes
 
