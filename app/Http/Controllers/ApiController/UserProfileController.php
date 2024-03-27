@@ -102,7 +102,7 @@ class UserProfileController extends Controller
 
             $user = $request;
 
-            // upload user profile image if there is one 
+            // upload user profile image if there is one
             if ($user->hasFile('profileImage')) {
                 $destination = "public/profileImages";
                 $image = $request->file('profileImage');
@@ -122,7 +122,6 @@ class UserProfileController extends Controller
         }
     }
 
-
     // function to update password
     static function changePassword(Request $request)
     {
@@ -130,9 +129,17 @@ class UserProfileController extends Controller
             $data = json_decode($request->getContent());
 
             $user = User::find($data->id);
-            $user->password = Hash::make($data->password);
-            $user->update();
-            return response(["message" => "Password changed successfully"]);
+
+            if(Hash::check($data->oldPassword,$user->password )){
+                $user->password = Hash::make($data->password);
+                $user->update();
+                return response(["message" => "Password changed successfully"]);
+            }
+            else{
+                return response(["message" => "Old password is incorrect"]);
+            }
+
+
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -145,7 +152,7 @@ class UserProfileController extends Controller
 
             $data =  json_decode($request->getContent());
 
-            $users = User::where('firstName', 'like', "%{$data->search}%")->orWhere('lastName', 'like', "%{$data->search}%")->get();
+            $users = User::where('firstName', 'like', "%{$data->search}%")->orWhere('lastName', 'like', "%{$data->search}%")->orWhere('userName', 'like', "%{$data->search}%")->get();
 
             return response($users);
         } catch (Exception $exception) {

@@ -26,7 +26,7 @@ class PostsController extends Controller
     static function createPost(Request $request)
     {
         try {
-            $post = json_decode($request->getContent());
+            $post = $request;
             $data = [];
             $data['users_id'] = $post->users_id;
             // $data['imageUrl'] = $post->imageUrl;
@@ -44,6 +44,7 @@ class PostsController extends Controller
                 $baseUrl = url('');
                 $data['imageUrl'] = $baseUrl."/storage/postsImages/".$image_name;
             }
+
 
             Posts::create($data);
             return response(['message' => 'Post Created '], 200);

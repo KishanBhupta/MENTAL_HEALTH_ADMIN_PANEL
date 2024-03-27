@@ -32,7 +32,7 @@ class AuthController extends Controller
             $data['isBlocked'] = $user->isBlocked;
             $data['userName'] = $user->userName;
 
-            // upload user profile image if there is one 
+            // upload user profile image if there is one
             if($user->hasFile('profileImage')){
                 $destination = "public/profileImages";
                 $image = $request->file('profileImage');
@@ -56,18 +56,17 @@ class AuthController extends Controller
 
         $auth = auth()->attempt(["email" => $user->email, "password" => $user->password]);
 
-
-
         if ($auth) {
             $authUser = User::firstWhere(['email' => $user->email]);
             if (Hash::check($user->password, $authUser->password)) {
                 $token = $authUser->createToken('access-token')->accessToken;
-                return response(["user" => $authUser, "token" => $token], 200);
+                return response(["user" => $authUser ,"token" => $token], 200);
             }
         } else {
             return response(["message" => "Invalid User Credentials"], 401);
         }
     }
+    
 
     public function login(Request $request)
     {
