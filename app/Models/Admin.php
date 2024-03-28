@@ -13,7 +13,7 @@ class Admin extends Model
     protected $table = 'admins'; // Specify the table name if it's different from the default naming convention
 
     protected $fillable = [
-        'adminName', // Add other fields here as needed
+        'user_id', // Add other fields here as needed
         'adminEmail',
         'adminPassword'
         // Add other fields here as needed
