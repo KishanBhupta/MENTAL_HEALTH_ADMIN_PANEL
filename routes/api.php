@@ -41,9 +41,9 @@ Route::group(["middleware" => "auth:api"], function () {
     // delete posts
     Route::get('/posts/deletePost/{id}', [PostsController::class, 'deletePost']);
     // add like to post
-    Route::get('/posts/addLike/{id}', [PostsController::class, 'addLike']);
+    Route::post('/posts/addLike', [PostsController::class, 'addLike']);
     // remove like to post
-    Route::get('/posts/removeLike/{id}', [PostsController::class, 'removeLike']);
+    Route::post('/posts/removeLike', [PostsController::class, 'removeLike']);
     // save post
     Route::post('/posts/savePost', [PostsController::class, 'savePost']);
     // un save post

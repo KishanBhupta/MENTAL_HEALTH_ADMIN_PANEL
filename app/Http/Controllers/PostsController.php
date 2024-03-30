@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController\AuthController;
+use App\Models\PostLikes;
 use App\Models\SavedPosts;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -16,7 +17,7 @@ class PostsController extends Controller
     {
         try {
             $data = json_decode($request->getContent());
-            $post = Posts::paginate(25, ["*"], 'page', $data->page);
+            $post = Posts::with(['withLikes','postUser'])->paginate(25, ["*"], 'page', $data->page);
             return response($post);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
@@ -36,13 +37,13 @@ class PostsController extends Controller
             $data['likes'] = 0;
             $data['postStatus'] = 1;
 
-            if($post->hasFile('imageUrl')){
+            if ($post->hasFile('imageUrl')) {
                 $destination = "public/postsImages";
                 $image = $request->file('imageUrl');
                 $image_name = $image->getClientOriginalName();
-                $image->storeAs($destination,$image_name);
+                $image->storeAs($destination, $image_name);
                 $baseUrl = url('');
-                $data['imageUrl'] = $baseUrl."/storage/postsImages/".$image_name;
+                $data['imageUrl'] = $baseUrl . "/storage/postsImages/" . $image_name;
             }
 
 
@@ -65,23 +66,36 @@ class PostsController extends Controller
         }
     }
 
-    static function addLike($id)
+    static function addLike(Request $request)
     {
         try {
-            $post = Posts::Find($id);
+            $data = json_decode($request->getContent());
+            $post = Posts::Find($data->post_id);
             $post->update(["likes" => $post->likes + 1]);
+
+            PostLikes::create([
+                "posts_id" => $data->post_id,
+                "users_id" => $data->user_id
+            ]);
+
             return response(['message' => "Like Added "], 200);
         } catch (Exception $exception) {
             AuthController::handleExceptions($exception);
         }
     }
 
-    static function removeLike($id)
+    static function removeLike(Request $request)
     {
         try {
-            $post = Posts::Find($id);
+
+            $data = json_decode($request->getContent());
+            $post = Posts::Find($data->post_id);
             $post->update(["likes" => $post->likes - 1]);
+
+            PostLikes::where(['posts_id' => $data->post_id, 'users_id'=>$data->user_id])->first()->delete();
+
             return response(['message' => "Like Removed "], 200);
+
         } catch (Exception $exception) {
             AuthController::handleExceptions($exception);
         }
@@ -107,7 +121,7 @@ class PostsController extends Controller
             $data = json_decode($request->getContent());
             $post = SavedPosts::where(['users_id' => $data->users_id, 'posts_id' => $data->posts_id])->first();
             $post->delete();
-            return response(["message"=>"Post unsaved successfully"]);
+            return response(["message" => "Post unsaved successfully"]);
         } catch (Exception $exception) {
             AuthController::handleExceptions($exception);
         }
