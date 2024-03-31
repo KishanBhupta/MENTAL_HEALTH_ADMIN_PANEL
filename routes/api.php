@@ -80,7 +80,7 @@ Route::group(["middleware" => "auth:api"], function () {
     //// comments apis
 
     // comments routes
-    Route::get('/posts/comments/getcomment', [CommentsController::class, 'getAllComments']);
+    Route::post('/posts/comments/getcomment', [CommentsController::class, 'getAllComments']);
 
     // add comment
     Route::post('/posts/comments/add', [CommentsController::class, 'addComment']);

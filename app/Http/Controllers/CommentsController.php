@@ -14,11 +14,15 @@ use App\Models\commentLike;
 
 class CommentsController extends Controller
 {
-    static function getAllComments()
+    static function getAllComments(Request $request)
     {
-        // $data = json_decode($request->getContent());
-        $comments = Comments::with(['commentUser'])->get();
-        return response($comments, 200);
+        try {
+            $data = json_decode($request->getContent());
+            $comments = Comments::with(['commentUser','withLikes'])->where(["posts_id"=>$data->post_id])->paginate(25, ["*"], 'page', $data->page);
+            return response($comments, 200);
+        } catch (Exception $e) {
+            return CommentsController::handleExceptions($e);
+        }
     }
 
     static function handleExceptions(Exception $exception)

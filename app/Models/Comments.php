@@ -22,7 +22,7 @@ class Comments extends Model
     ];
 
     public function withLikes() : HasMany {
-        return $this->hasMany(commentLike::class, 'posts_id','id');
+        return $this->hasMany(commentLike::class, 'comment_id','id');
     }
     public function commentUser() : BelongsTo {
         return $this->belongsTo(User::class,'users_id','id');
