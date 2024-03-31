@@ -19,6 +19,7 @@ class Posts extends Model
         "postDescription",
         "isAnonymous",
         "likes",
+        "comments",
         "postStatus",
     ];
 
@@ -29,4 +30,9 @@ class Posts extends Model
     public function postUser() : BelongsTo {
         return $this->belongsTo(User::class,'users_id','id');
     }
+
+    public function getSavedPost() : Hasmany{
+        return $this->hasMany(SavedPosts::class,'posts_id','id');
+    }
+
 }
