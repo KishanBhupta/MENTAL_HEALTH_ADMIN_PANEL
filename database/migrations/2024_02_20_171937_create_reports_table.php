@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('users_id');
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->unsignedBigInteger('reportedUserId')->nullable();
-            $table->foreign('reportedUserID')->references('id')->on('users');
+            $table->foreign('reportedUserID')->references('id')->on('users')->cascadeOnDelete();
 
             $table->unsignedBigInteger('reportedPostId')->nullable();
-            $table->foreign('reportedPostID')->references('id')->on('posts');
+            $table->foreign('reportedPostID')->references('id')->on('posts')->cascadeOnDelete();
 
             $table->unsignedBigInteger('reportedCommentId')->nullable();
-            $table->foreign('reportedCommentID')->references('id')->on('comments');
+            $table->foreign('reportedCommentID')->references('id')->on('comments')->cascadeOnDelete();
 
             $table->string('reportReason');
 

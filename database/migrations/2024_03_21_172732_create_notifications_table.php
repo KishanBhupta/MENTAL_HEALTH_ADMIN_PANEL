@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("users_id");
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade')
+            $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete()->onUpdate('cascade')
             ->onDelete('cascade');
             $table->string('title');
             $table->string('body');

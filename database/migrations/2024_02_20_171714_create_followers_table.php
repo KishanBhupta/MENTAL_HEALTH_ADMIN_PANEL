@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('followerId');
-            $table->foreign('users_id')->references('id')->on('users');
+            $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete();
             $table->boolean('isFollowing');
             $table->boolean('isRequested');
             $table->timestamps();

@@ -17,10 +17,6 @@ class SavedPosts extends Model
     ];
 
     public function savedPost() : BelongsTo {
-        return $this->belongsTo(Posts::class, 'posts_id','id');
-    }
-
-    public function savedPostUser() : BelongsTo {
-        return $this->belongsTo(User::class,'users_id','id');
+        return $this->belongsTo(Posts::class, 'posts_id','id')->with('postUser');
     }
 }

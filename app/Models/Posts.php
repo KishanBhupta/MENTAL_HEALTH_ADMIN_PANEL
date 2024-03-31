@@ -31,7 +31,7 @@ class Posts extends Model
         return $this->belongsTo(User::class,'users_id','id');
     }
 
-    public function getSavedPost() : Hasmany{
+    public function getSavedPost() : HasMany{
         return $this->hasMany(SavedPosts::class,'posts_id','id');
     }
 

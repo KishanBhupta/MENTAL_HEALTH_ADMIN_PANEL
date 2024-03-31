@@ -59,11 +59,7 @@ class PostsController extends Controller
     {
         try {
             $post = Posts::Find($id);
-            // PostLikes::where(["posts_id"=>$post->$id])->delete();
-            // commentLike::where(['comment_id' => $id])->delete();
-            // Comments::where(['posts_id' => $id])->delete();
             $post->delete();
-            // return response($post);
             return response(['message' => "Post delete Sucessflly "], 200);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
@@ -136,7 +132,7 @@ class PostsController extends Controller
         try {
             $data = json_decode($request->getContent());
 
-            $posts = SavedPosts::with(['savedPost','savedPostUser'])->where(['users_id' => $data->id])->paginate(25, ["*"], 'page', $data->page)->all();
+            $posts = SavedPosts::with(['savedPost'])->where(['users_id' => $data->id])->paginate(25, ["*"], 'page', $data->page);
 
             // return response("Hello");
 
