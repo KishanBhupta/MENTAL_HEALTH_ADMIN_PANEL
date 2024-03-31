@@ -59,7 +59,7 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('/profile/myProfile/updateMyProfile', [UserProfileController::class, "updateMyProfile"]);
     // change password
     Route::post('/profile/myProfile/changePassword', [UserProfileController::class, 'changePassword']);
-    // get other users profile 
+    // get other users profile
     Route::post('/profile/userProfile', [UserProfileController::class, 'userProfile']);
     // get other users posts
     Route::post('/profile/userProfile/posts', [UserProfileController::class, 'usersPost']);
@@ -80,8 +80,8 @@ Route::group(["middleware" => "auth:api"], function () {
     //// comments apis
 
     // comments routes
-    Route::get('/getcomment', [CommentsController::class, 'getAllComments']);
-    
+    Route::get('/posts/comments/getcomment', [CommentsController::class, 'getAllComments']);
+
     // add comment
     Route::post('/posts/comments/add', [CommentsController::class, 'addComment']);
 
@@ -89,17 +89,17 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get("/posts/comments/delete/{id}", [CommentsController::class, 'deleteComment']);
 
     // like comment
-    Route::get("/posts/comments/like/{id}", [CommentsController::class, 'likeComment']);
+    Route::post("/posts/comments/like", [CommentsController::class, 'likeComment']);
 
     // dislike comment
-    Route::get("/posts/comments/dislike/{id}", [CommentsController::class, 'dislikeComment']);
+    Route::post("/posts/comments/dislike", [CommentsController::class, 'dislikeComment']);
 
-    /// notification 
+    /// notification
 
     // add notification
     Route::post('/notifications/add', [NotificationController::class,'addNotification']);
 
-    /// Block User 
+    /// Block User
 
     // add block user
     Route::post("users/block/add",[BlockUserController::class, 'addBlockUser']);
@@ -123,7 +123,7 @@ Route::group(["middleware" => "auth:api"], function () {
 
     // remove following request or follower
     Route::post("/followers/removeFollower",[FollowersController::class,"removeRequestOrRemoveFollower"]);
-    
+
 
 });
 

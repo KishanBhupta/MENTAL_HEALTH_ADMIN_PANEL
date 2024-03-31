@@ -10,12 +10,14 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use App\Http\Controllers\ApiController\AuthController;
 use App\Models\Posts;
+use App\Models\commentLike;
 
 class CommentsController extends Controller
 {
     static function getAllComments()
     {
-        $comments = Comments::all();
+        // $data = json_decode($request->getContent());
+        $comments = Comments::with(['commentUser'])->get();
         return response($comments, 200);
     }
 
@@ -55,7 +57,7 @@ class CommentsController extends Controller
             $commentStatus = $data->commentStatus;
             $isAnonymous = $data->isAnonymous;
 
-            
+
             Comments::create([
                 "users_id"=>$userId,
                 "posts_id"=>$data->post_id,
@@ -75,15 +77,18 @@ class CommentsController extends Controller
             return AuthController::handleExceptions($exception);
         }
     }
-    
+
     // function to delete comment
     static function deleteComment($id){
         try{
             $comment = Comments::find($id);
+            // delete commen like from comment like table
+            commentLike::where(['comment_id' => $id])->delete();
+            //delete comment
             $comment->delete();
 
             return response([
-                "status"=>"successs","message"=>"Post deleted successfully"
+                "status"=>"successs","message"=>"Comment deleted successfully"
             ]);
         }catch(Exception $exception){
             return AuthController::handleExceptions($exception);
@@ -91,30 +96,37 @@ class CommentsController extends Controller
     }
 
     // function to add like to comment
-    static function likeComment($id){
-        try{
-            $comment = Comments::find($id);
-            $comment->update([
-                "likes"=>($comment->likes??0)+1
-            ]);
 
-            return response(['status'=>"successs","message"=>"Comment Like added successfully"]);
-        }catch(Exception $exception){
-            return AuthController::handleExceptions($exception);
+     static function likeComment(Request $request)
+    {
+        try {
+            $data = json_decode($request->getContent());
+            $comment = Comments::Find($data->comment_id);
+
+            $comment->update(["likes" => $comment->likes + 1]);
+
+            commentLike::create([
+                "comment_id" => $data->comment_id,
+                "users_id" => $data->user_id
+            ]);
+            return response(['message' => "Like Added "], 200);
+        } catch (Exception $exception) {
+            AuthController::handleExceptions($exception);
         }
     }
-
     // function to remove like from comment
-    static function dislikeComment($id){
-        try{
-            $comment = Comments::find($id);
-            $comment->update([
-                "likes"=>($comment->likes??0)-1
-            ]);
-            
-            return response(['status'=>"successs","message"=>"Comment Dislike added successfully"]);
-        }catch(Exception $exception){
-            return AuthController::handleExceptions($exception);
+    static function dislikeComment(Request $request){
+        try {
+           $data = json_decode($request->getContent());
+            $comment = Comments::Find($data->comment_id);
+
+            $comment->update(["likes" => $comment->likes - 1]);
+
+           commentLike::where(['comment_id' => $data->comment_id, 'users_id'=>$data->user_id])->first()->delete();
+
+            return response(['message' => "Like Removed "], 200);
+        } catch (Exception $exception) {
+            AuthController::handleExceptions($exception);
         }
     }
 }

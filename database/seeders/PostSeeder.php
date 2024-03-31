@@ -26,6 +26,7 @@ class PostSeeder extends Seeder
             "postText"=>"This is dummy post text.",
             "postDescription"=>"This is generated description of the post you submitted to the database and will be displayed in the database when submitted  to the database server and when submitted to the database server again and will be displayed in the database when submitted to the database server again.",
             "likes"=>789,
+            "comments"=>10,
             "postStatus"=>1,
         ]);
 
@@ -36,6 +37,7 @@ class PostSeeder extends Seeder
             "postText"=>"This is dummy post text.",
             "postDescription"=>"This is generated description of the post you submitted to the database and will be displayed in the database when submitted  to the database server and when submitted to the database server again and will be displayed in the database when submitted to the database server again.",
             "likes"=>789,
+            "comments"=>10,
             "postStatus"=>1,
         ]);
     }
