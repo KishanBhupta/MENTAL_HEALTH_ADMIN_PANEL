@@ -36,6 +36,8 @@ class PostsController extends Controller
             $data['postDescription'] = $post->postDescription;
             $data['isAnonymous'] = $post->isAnonymous;
             $data['likes'] = 0;
+            $data['comments'] = 0;
+
             $data['postStatus'] = 1;
 
             if ($post->hasFile('imageUrl')) {
