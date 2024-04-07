@@ -37,7 +37,6 @@ class PostsController extends Controller
             $data['isAnonymous'] = $post->isAnonymous;
             $data['likes'] = 0;
             $data['comments'] = 0;
-
             $data['postStatus'] = 1;
 
             if ($post->hasFile('imageUrl')) {
@@ -45,7 +44,10 @@ class PostsController extends Controller
                 $image = $request->file('imageUrl');
                 $image_name = $image->getClientOriginalName();
                 $image->storeAs($destination, $image_name);
-                $baseUrl = url('');
+                // for live site
+                // $baseUrl = url('');
+                // for local host
+                $baseUrl = "http://192.168.1.94:8000";
                 $data['imageUrl'] = $baseUrl . "/storage/postsImages/" . $image_name;
             }
 

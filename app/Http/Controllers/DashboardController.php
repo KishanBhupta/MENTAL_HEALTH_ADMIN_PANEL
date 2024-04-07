@@ -11,9 +11,7 @@ use App\Models\User;
 use App\Models\Posts;
 use App\Models\AppFeedbacks;
 use App\Models\Reports;
-
-
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -29,18 +27,41 @@ class DashboardController extends Controller
         $feedbackCount = AppFeedbacks::all()->count();
         $reportCount = Reports::all()->count();
 
-        
+        $dates = array();
+        $postCountForChart = array();
+        $userCountForChart = array();
+
+        for($i = 0; $i < 5; $i++){
+            // getting date
+            $date = Carbon::now()->subDays($i)->toDateString();
+            array_push($dates,$date);
+            array_push($postCountForChart,$this->getPostsCountForDate($date));
+            array_push($userCountForChart,$this->getUserCountForDate($date));
+
+        }
+        $dates = array_reverse($dates);
+        $postCountForChart = array_reverse($postCountForChart);
+        $userCountForChart = array_reverse($userCountForChart);
 
         //fake data for post chart
         $postData = [
-            "labels"=>["01-01-2023","02-01-2023","03-01-2023","04-01-2023","05-01-2023","06-01-2023"],
-            "posts"=>[10,14,9,12,5,20],
+            "labels"=>$dates,
+            "posts"=>$postCountForChart,
         ];
         //fake data for user chart
         $userData = [
-            "labels"=>["01-01-2023","02-01-2023","03-01-2023","04-01-2023","05-01-2023","06-01-2023"],
-            "users"=>[15,20,35,44,50,65],
+            "labels"=>$dates,
+            "users"=>$userCountForChart,
         ];
         return view('layouts.admin.home',compact('postData','userData' ,'userCount','postCount','feedbackCount','reportCount'));
+    }
+
+
+    function getPostsCountForDate(String $data) : int {
+        return Posts::where('created_at','like',"{$data}%")->count();
+    }
+
+    function getUserCountForDate(String $date) : int {
+        return User::where('created_at','like',"{$date}%")->count();
     }
 }
