@@ -17,7 +17,6 @@ class UserProfileController extends Controller
     {
         try {
             $data = json_decode($request->getContent());
-
             $userPosts = Posts::where('users_id', $data->id)->where("isAnonymous", false)->paginate(25, ["*"], 'page', $data->page);
             return response($userPosts);
         } catch (Exception $exception) {

@@ -13,10 +13,10 @@ class Comments extends Model
     use HasFactory;
 
     protected $fillable = [
-        "posts_id",
         "users_id",
-        "isAnonymous",
+        "posts_id",
         "commentDescription",
+        "isAnonymous",
         "likes",
         "commentStatus",
     ];

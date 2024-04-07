@@ -57,8 +57,6 @@ class CommentsController extends Controller
             $data = json_decode($request->getContent());
 
             $userId = $data->users_id;
-            $likes = $data->likes;
-            $commentStatus = $data->commentStatus;
             $isAnonymous = $data->isAnonymous;
 
 
@@ -67,8 +65,14 @@ class CommentsController extends Controller
                 "posts_id"=>$data->post_id,
                 "commentDescription"=>$data->commentDescription,
                 "isAnonymous"=>$isAnonymous,
-                "likes"=>$likes,
-                "commentStatus"=>$commentStatus,
+                "likes"=>0,
+                "commentStatus"=>0,
+            ]);
+
+            $post = Posts::find($data->post_id);
+
+            $post->update([
+                "comments"=>$post->comments+1
             ]);
 
 
@@ -86,6 +90,13 @@ class CommentsController extends Controller
     static function deleteComment($id){
         try{
             $comment = Comments::find($id);
+
+            $post = Posts::find($comment->posts_id);
+
+            $post->update([
+                "comments"=>$post->comments-1
+            ]);
+
             // delete commen like from comment like table
             commentLike::where(['comment_id' => $id])->delete();
             //delete comment

@@ -38,7 +38,10 @@ class AuthController extends Controller
                 $image = $request->file('profileImage');
                 $image_name = $image->getClientOriginalName();
                 $image->storeAs($destination,$image_name);
-                $baseUrl = url('');
+                // for live site
+                // $baseUrl = url('');
+                // for local host
+                $baseUrl = "http://192.168.1.94:8000";
                 $data['profileImage'] = $baseUrl."/storage/profileImages/".$image_name;
             }
             User::create($data);
@@ -97,7 +100,7 @@ class AuthController extends Controller
                 $statusCode = 500;
                 break;
         }
-        return response(['message' => $message, 'exception'=>$exception , 'status' => 'error'], $statusCode);
+        return response(['message' => $message, 'exception'=>$exception->getMessage() , 'status' => 'error'], $statusCode);
     }
 
 }
