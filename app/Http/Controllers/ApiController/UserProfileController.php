@@ -68,9 +68,17 @@ class UserProfileController extends Controller
     static function usersPost(Request $request)
     {
         try {
+            if(session_get('adminEmail' !== null)){
             $data = json_decode($request->getContent());
             $userPosts = Posts::where('users_id', $data->users_id)->where("isAnonymous", false)->paginate(25, ["*"], 'page', $data->page);
             return response($userPosts);
+            }
+            else{
+                return view('/adminlogin');
+            }
+
+
+
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -107,7 +115,11 @@ class UserProfileController extends Controller
                 $image = $request->file('profileImage');
                 $image_name = $image->getClientOriginalName();
                 $image->storeAs($destination, $image_name);
-                $baseUrl = url('');
+                // for live site
+                // $baseUrl = url('');
+
+                // for local host
+                 $baseUrl = "http://192.168.4.207:8000";
                 $imageUrl = $baseUrl . "/storage/profileImages/" . $image_name;
             }
 

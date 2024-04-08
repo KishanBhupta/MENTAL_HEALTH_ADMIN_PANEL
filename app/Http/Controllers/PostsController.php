@@ -47,7 +47,7 @@ class PostsController extends Controller
                 // for live site
                 // $baseUrl = url('');
                 // for local host
-                $baseUrl = "http://192.168.1.94:8000";
+                $baseUrl = "http://192.168.4.207:8000";
                 $data['imageUrl'] = $baseUrl . "/storage/postsImages/" . $image_name;
             }
 
