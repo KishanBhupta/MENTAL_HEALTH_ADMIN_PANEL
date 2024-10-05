@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('userName')->nullable();
             $table->string('profileImage')->nullable();
-            $table->string('email')->unique();
+            $table->string('email',250)->unique();
             $table->string('password');
             $table->string('phoneNumber');
             $table->boolean('isBlocked');

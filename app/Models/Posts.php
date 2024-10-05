@@ -35,4 +35,8 @@ class Posts extends Model
         return $this->hasMany(SavedPosts::class,'posts_id','id');
     }
 
+    public function hasReported($userId) {
+        return Reports::where('users_id','=',$userId)->where('reportedPostId','=',$this->id)->exists();
+    }
+
 }

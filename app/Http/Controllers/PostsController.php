@@ -13,19 +13,25 @@ use Illuminate\Foundation\Bootstrap\HandleExceptions;
 
 class PostsController extends Controller
 {
-    static function getPost(Request $request)
+    function getPost(Request $request)
     {
         try {
             $data = json_decode($request->getContent());
-            // $commentCount = Posts::with('CommentCount')->count();
-            $post = Posts::with(['withLikes','postUser','getSavedPost'])->paginate(25, ["*"], 'page', $data->page);
+            $post = Posts::withCount('withLikes as likes')->withCount('getSavedPost as saves')->with(['postUser:id,userName,profileImage'])->paginate(25, ["*"], 'page', $data->page);
+
+            $post->getCollection()->transform(function($post) {
+                $post->isLiked = $post->withLikes()->where('users_id', auth()->id())->exists();
+                $post->isSaved = $post->getSavedPost()->where('users_id', auth()->id())->exists();
+                $post->hasReported = $post->hasReported(auth()->id());
+                return $post;
+            });
             return response($post);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }
 
-    static function createPost(Request $request)
+    function createPost(Request $request)
     {
         try {
             $post = $request;

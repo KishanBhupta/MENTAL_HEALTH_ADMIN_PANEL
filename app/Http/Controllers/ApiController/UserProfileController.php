@@ -99,10 +99,10 @@ class UserProfileController extends Controller
     {
         try {
 
-            $user = $request;
+            $user = $request->user();
 
             // upload user profile image if there is one
-            if ($user->hasFile('profileImage')) {
+            if ($request->hasFile('profileImage')) {
                 $destination = "public/profileImages";
                 $image = $request->file('profileImage');
                 $image_name = $image->getClientOriginalName();

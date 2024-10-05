@@ -18,7 +18,12 @@ class CommentsController extends Controller
     {
         try {
             $data = json_decode($request->getContent());
-            $comments = Comments::with(['commentUser','withLikes'])->where(["posts_id"=>$data->post_id])->paginate(25, ["*"], 'page', $data->page);
+            $comments = Comments::with(['commentUser:id,firstName,lastName,profileImage,userName'])->NotBlocked()->where(["posts_id" => $data->post_id])->orderBy('created_at', 'DESC')->paginate($data->limit ?? 25, ["*"], 'page', $data->page);
+
+            $comments->getCollection()->transform(function($comment) {
+                $comment->isLiked = $comment->withLikes()->where('users_id', auth()->id())->exists();
+                return $comment;
+            });
             return response($comments, 200);
         } catch (Exception $e) {
             return CommentsController::handleExceptions($e);
@@ -51,8 +56,9 @@ class CommentsController extends Controller
     }
 
     // function to add comment
-    static function addComment(Request $request){
-        try{
+    static function addComment(Request $request)
+    {
+        try {
 
             $data = json_decode($request->getContent());
 
@@ -60,41 +66,41 @@ class CommentsController extends Controller
             $isAnonymous = $data->isAnonymous;
 
 
-            Comments::create([
-                "users_id"=>$userId,
-                "posts_id"=>$data->post_id,
-                "commentDescription"=>$data->commentDescription,
-                "isAnonymous"=>$isAnonymous,
-                "likes"=>0,
-                "commentStatus"=>0,
+            $comment = Comments::create([
+                "users_id" => $userId,
+                "posts_id" => $data->post_id,
+                "commentDescription" => $data->commentDescription,
+                "isAnonymous" => $isAnonymous,
+                "likes" => 0,
+                "commentStatus" => 0,
             ]);
 
             $post = Posts::find($data->post_id);
 
             $post->update([
-                "comments"=>$post->comments+1
+                "comments" => $post->comments + 1
             ]);
 
-
             return response([
-                "status"=>"successs","message"=>"Comment created successfully"
-            ],200);
-
-
-        }catch(Exception $exception){
+                "status" => "successs",
+                "message" => "Comment created successfully",
+                "id" => $comment->id
+            ], 200);
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }
 
     // function to delete comment
-    static function deleteComment($id){
-        try{
+    static function deleteComment($id)
+    {
+        try {
             $comment = Comments::find($id);
 
             $post = Posts::find($comment->posts_id);
 
             $post->update([
-                "comments"=>$post->comments-1
+                "comments" => $post->comments - 1
             ]);
 
             // delete commen like from comment like table
@@ -103,16 +109,17 @@ class CommentsController extends Controller
             $comment->delete();
 
             return response([
-                "status"=>"successs","message"=>"Comment deleted successfully"
+                "status" => "successs",
+                "message" => "Comment deleted successfully"
             ]);
-        }catch(Exception $exception){
+        } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
     }
 
     // function to add like to comment
 
-     static function likeComment(Request $request)
+    static function likeComment(Request $request)
     {
         try {
             $data = json_decode($request->getContent());
@@ -130,14 +137,15 @@ class CommentsController extends Controller
         }
     }
     // function to remove like from comment
-    static function dislikeComment(Request $request){
+    static function dislikeComment(Request $request)
+    {
         try {
-           $data = json_decode($request->getContent());
+            $data = json_decode($request->getContent());
             $comment = Comments::Find($data->comment_id);
 
             $comment->update(["likes" => $comment->likes - 1]);
 
-           commentLike::where(['comment_id' => $data->comment_id, 'users_id'=>$data->user_id])->first()->delete();
+            commentLike::where(['comment_id' => $data->comment_id, 'users_id' => $data->user_id])->first()->delete();
 
             return response(['message' => "Like Removed "], 200);
         } catch (Exception $exception) {
@@ -145,5 +153,3 @@ class CommentsController extends Controller
         }
     }
 }
-
-

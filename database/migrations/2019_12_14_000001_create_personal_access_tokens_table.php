@@ -12,14 +12,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
+            // $table->id();
+            // $table->morphs('tokenable');
+            // $table->string('name');
+            // $table->string('token', length: 250)->unique();
+            // $table->text('abilities')->nullable();
+            // $table->timestamp('last_used_at')->nullable();
+            // $table->timestamp('expires_at')->nullable();
+            // $table->timestamps();
+
             $table->id();
-            $table->morphs('tokenable');
+            // Limit the length of the 'tokenable_type' field to 191 characters to prevent index size issues
+            $table->string('tokenable_type', 191);
+            $table->unsignedBigInteger('tokenable_id');
             $table->string('name');
-            $table->string('token', 64)->unique();
+            $table->string('token', 250)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
+        
+            // Add the composite index for morphs with the adjusted length
+            $table->index(['tokenable_type', 'tokenable_id']);
         });
     }
 

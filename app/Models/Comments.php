@@ -27,4 +27,9 @@ class Comments extends Model
     public function commentUser() : BelongsTo {
         return $this->belongsTo(User::class,'users_id','id');
     }
+
+
+    public function scopeNotBlocked($query) {
+        return $query->where('commentStatus','!=','1');
+    }
 }

@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(["middleware" => "auth:api"], function () {
 
-    Route::get('/getLoggedInUser', [AuthController::class, 'login']);
+    Route::get('/getLoggedInUser', [AuthController::class, 'login'])->name('login');
 
     // feedback routes
     Route::post('/feedBack/storeFeedback', [AppFeedBacksController::class, 'storeFeedback']);
@@ -37,7 +37,7 @@ Route::group(["middleware" => "auth:api"], function () {
     // posts routes
     Route::post('/posts/createPost', [PostsController::class, 'createPost']);
     // get posts
-    Route::get('/posts/getpost', [PostsController::class, 'getPost']);
+    Route::get('/posts/getPost', [PostsController::class, 'getPost']);
     // delete posts
     Route::get('/posts/deletePost/{id}', [PostsController::class, 'deletePost']);
     // add like to post
@@ -47,7 +47,7 @@ Route::group(["middleware" => "auth:api"], function () {
     // save post
     Route::post('/posts/savePost', [PostsController::class, 'savePost']);
     // un save post
-    Route::post('/posts/unsavePost', [PostsController::class, 'unSavePost']);
+    Route::post('/posts/unSavePost', [PostsController::class, 'unSavePost']);
     // get saved post
     Route::get('posts/getSavedPosts', [PostsController::class, 'getSavedPosts']);
 
@@ -80,7 +80,7 @@ Route::group(["middleware" => "auth:api"], function () {
     //// comments apis
 
     // comments routes
-    Route::post('/posts/comments/getcomment', [CommentsController::class, 'getAllComments']);
+    Route::post('/posts/comments/getComment', [CommentsController::class, 'getAllComments']);
 
     // add comment
     Route::post('/posts/comments/add', [CommentsController::class, 'addComment']);

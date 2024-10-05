@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -24,13 +25,13 @@ class AuthController extends Controller
 
             $data = [];
 
-            $data['firstName'] = $user->firstName;
-            $data['lastName'] = $user->lastName;
+            $data['firstName'] = $user->firstName??null;
+            $data['lastName'] = $user->lastName??null;
             $data['email'] = $user->email;
-            $data['phoneNumber'] = $user->phoneNumber;
+            $data['phoneNumber'] = $user->phoneNumber??null;
             $data['password'] = Hash::make($user->password);
             $data['isBlocked'] = $user->isBlocked;
-            $data['userName'] = $user->userName;
+            $data['userName'] = $user->userName??null;
 
             // upload user profile image if there is one
             if($user->hasFile('profileImage')){
@@ -74,7 +75,8 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $user = auth()->guard('api')->user();
-        return response($user, 200);
+        Log::alert($user);
+        return response()->json(["user" => $user]);
     }
 
 

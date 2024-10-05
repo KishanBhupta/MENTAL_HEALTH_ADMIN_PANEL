@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             "firstName" => "John",
             "lastName" => "Carter",
             "email" => "john@example.com",
-            "password" => Hash::make("123456"),
+            "password" => bcrypt("123456"),
             "phoneNumber" => "1234567890",
             "isBlocked" => false,
         ]);
@@ -34,7 +34,16 @@ class UserSeeder extends Seeder
             "firstName" => "Alex",
             "lastName" => "Mason",
             "email" => "alex@example.com",
-            "password" => Hash::make("123456"),
+            "password" => bcrypt("123456"),
+            "phoneNumber" => "1234567890",
+            "isBlocked" => 0,
+        ]);
+
+        User::create([
+            "firstName" => "Aatman",
+            "lastName" => "Kacha",
+            "email" => "aatmankacha@gmail.com",
+            "password" => bcrypt("123456"),
             "phoneNumber" => "1234567890",
             "isBlocked" => 0,
         ]);
