@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AppFeedBacks;
+use App\Models\Followers;
 use App\Models\Posts;
 
 
@@ -75,7 +76,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $user = auth()->guard('api')->user();
-        Log::alert($user);
+
+        $postCount = Posts::where('users_id',$user->id)->count();
+
+        $followersCount = Followers::where('users_id',$user->id)->where('isFollowing',true)->count();
+
+        $followingCount = Followers::where('followerId',$user->id)->where('isFollowing',true)->count();
+
+        $user->postsCount = $postCount;
+        $user->followersCount = $followersCount;
+        $user->followingCount = $followingCount;
+
         return response()->json(["user" => $user]);
     }
 

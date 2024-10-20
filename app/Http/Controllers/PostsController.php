@@ -10,6 +10,8 @@ use App\Models\SavedPosts;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -17,7 +19,7 @@ class PostsController extends Controller
     {
         try {
             $data = json_decode($request->getContent());
-            $post = Posts::withCount('withLikes as likes')->withCount('getSavedPost as saves')->with(['postUser:id,userName,profileImage'])->paginate(25, ["*"], 'page', $data->page);
+            $post = Posts::withCount('withLikes as likes')->withCount('getSavedPost as saves')->with(['postUser:id,userName,profileImage'])->orderBy('created_at','DESC')->paginate(25, ["*"], 'page', $data->page);
 
             $post->getCollection()->transform(function($post) {
                 $post->isLiked = $post->withLikes()->where('users_id', auth()->id())->exists();
@@ -37,23 +39,20 @@ class PostsController extends Controller
             $post = $request;
             $data = [];
             $data['users_id'] = $post->users_id;
-            // $data['imageUrl'] = $post->imageUrl;
-            $data['postText'] = $post->postText;
-            $data['postDescription'] = $post->postDescription;
-            $data['isAnonymous'] = $post->isAnonymous;
+            $data['postText'] = $post->postText??"";
+            $data['postDescription'] = $post->postDescription??"";
+            $data['isAnonymous'] = $post->isAnonymous??false;
             $data['likes'] = 0;
             $data['comments'] = 0;
             $data['postStatus'] = 1;
 
             if ($post->hasFile('imageUrl')) {
-                $destination = "public/postsImages";
+                $destination = "/public/postsImages";
                 $image = $request->file('imageUrl');
                 $image_name = $image->getClientOriginalName();
+                $image_extension = $image->getClientOriginalExtension();
                 $image->storeAs($destination, $image_name);
-                // for live site
-                // $baseUrl = url('');
-                // for local host
-                $baseUrl = "http://192.168.1.94:8000";
+                $baseUrl = "http://192.168.1.94";
                 $data['imageUrl'] = $baseUrl . "/storage/postsImages/" . $image_name;
             }
 

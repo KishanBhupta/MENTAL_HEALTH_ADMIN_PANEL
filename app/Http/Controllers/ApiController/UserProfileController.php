@@ -17,7 +17,9 @@ class UserProfileController extends Controller
     {
         try {
             $data = json_decode($request->getContent());
-            $userPosts = Posts::where('users_id', $data->id)->where("isAnonymous", false)->paginate(25, ["*"], 'page', $data->page);
+            $userPosts = Posts::where('users_id', $data->id)
+                // ->where("isAnonymous", false)
+                ->paginate(25, ["*"], 'page', $data->page);
             return response($userPosts);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
@@ -114,8 +116,7 @@ class UserProfileController extends Controller
             $updateUser = User::find($user->id);
             $updateUser->update(["profileImage" => $imageUrl]);
 
-            return response(['status'=>"success",'message'=>'Profile picture updated','newImageUrl'=>$imageUrl]);
-
+            return response(['status' => "success", 'message' => 'Profile picture updated', 'newImageUrl' => $imageUrl]);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -129,16 +130,13 @@ class UserProfileController extends Controller
 
             $user = User::find($data->id);
 
-            if(Hash::check($data->oldPassword,$user->password )){
+            if (Hash::check($data->oldPassword, $user->password)) {
                 $user->password = Hash::make($data->password);
                 $user->update();
                 return response(["message" => "Password changed successfully"]);
-            }
-            else{
+            } else {
                 return response(["message" => "Old password is incorrect"]);
             }
-
-
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
@@ -151,11 +149,55 @@ class UserProfileController extends Controller
 
             $data =  json_decode($request->getContent());
 
-            $users = User::where('firstName', 'like', "%{$data->search}%")->orWhere('lastName', 'like', "%{$data->search}%")->orWhere('userName', 'like', "%{$data->search}%")->get();
+            $users = User::select(['id', 'firstName', 'lastName', 'userName', 'profileImage'])
+                ->where('id', '!=', auth()->id())
+                ->where(function ($query)  use ($data) {
+                    return $query->where('firstName', 'like', "%{$data->search}%")->orWhere('lastName', 'like', "%{$data->search}%")
+                        ->orWhere('userName', 'like', "%{$data->search}%");
+                })->paginate(25, ["*"], 'page', $data->page);
+
+            $users->getCollection()->transform(function ($user) {
+                $user->isFollowed = $user->isFollowed();
+                $user->isRequested = $user->isRequested();
+                return $user;
+            });
 
             return response($users);
         } catch (Exception $exception) {
             return AuthController::handleExceptions($exception);
         }
+    }
+
+    // function to get current user's profile
+    function getProfile(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        $data = json_decode($request->getContent(), true);
+
+        $user = User::find($data['user_id']);
+
+        if ($user) {
+            $postCount = Posts::where('users_id', $user->id)->count();
+
+            $followersCount = Followers::where('users_id', $user->id)->where('isFollowing', true)->count();
+
+            $followingCount = Followers::where('followerId', $user->id)->where('isFollowing', true)->count();
+
+            $user->postsCount = $postCount;
+            $user->followersCount = $followersCount;
+            $user->followingCount = $followingCount;
+
+            // $response = [
+            //     'user' => $user,
+            // ];
+
+            return response($user, 200);
+        }
+
+        return response(['message'=>'User profile not found.'],404);
     }
 }

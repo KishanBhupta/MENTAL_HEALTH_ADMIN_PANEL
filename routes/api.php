@@ -52,6 +52,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('posts/getSavedPosts', [PostsController::class, 'getSavedPosts']);
 
     // user profiles routes
+    // get current user profile
+    Route::post('/users/profile',[UserProfileController::class,'getProfile']);
+    // get user's posts
     Route::post('/profile/myProfile/posts', [UserProfileController::class, 'myPosts']);
     // users anonymous posts
     Route::post('/profile/myProfile/posts/anonymousPosts', [UserProfileController::class, 'myAnonymousPosts']);

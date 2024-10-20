@@ -52,7 +52,17 @@ class User extends Authenticatable
     {
         $accessTokenId = $this->tokens()->first()->id;
         $accessToken = $this->findForToken($accessTokenId);
-        
+
         return $accessToken;
+    }
+
+    public function isFollowed()
+    {
+        return Followers::where('followerId', '=', auth()->id())->where('users_id', $this->id)->where('isFollowing', true)->exists();
+    }
+
+    public function isRequested()
+    {
+        return Followers::where('followerId', '=', auth()->id())->where('users_id', $this->id)->where('isRequested', true)->exists();
     }
 }
